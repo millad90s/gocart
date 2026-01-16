@@ -1,10 +1,10 @@
 'use client'
-import { dummyStoreDashboardData } from "@/assets/assets"
 import Loading from "@/components/Loading"
 import { CircleDollarSignIcon, ShoppingBasketIcon, StarIcon, TagsIcon } from "lucide-react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
+import { toast } from "react-hot-toast"
 
 export default function Dashboard() {
 
@@ -22,14 +22,24 @@ export default function Dashboard() {
 
     const dashboardCardsData = [
         { title: 'Total Products', value: dashboardData.totalProducts, icon: ShoppingBasketIcon },
-        { title: 'Total Earnings', value: currency + dashboardData.totalEarnings, icon: CircleDollarSignIcon },
+        { title: 'Total Earnings', value: currency + dashboardData.totalEarnings.toFixed(2), icon: CircleDollarSignIcon },
         { title: 'Total Orders', value: dashboardData.totalOrders, icon: TagsIcon },
         { title: 'Total Ratings', value: dashboardData.ratings.length, icon: StarIcon },
     ]
 
     const fetchDashboardData = async () => {
-        setDashboardData(dummyStoreDashboardData)
-        setLoading(false)
+        try {
+            const response = await fetch('/api/store/dashboard')
+            if (!response.ok) throw new Error('Failed to fetch dashboard data')
+            
+            const data = await response.json()
+            setDashboardData(data)
+        } catch (error) {
+            console.error('Error fetching dashboard data:', error)
+            toast.error('Failed to load dashboard data')
+        } finally {
+            setLoading(false)
+        }
     }
 
     useEffect(() => {
@@ -74,7 +84,7 @@ export default function Dashboard() {
                             </div>
                             <div className="flex flex-col justify-between gap-6 sm:items-end">
                                 <div className="flex flex-col sm:items-end">
-                                    <p className="text-slate-400">{review.product?.category}</p>
+                                    <p className="text-slate-400">{review.product?.category?.name || 'Uncategorized'}</p>
                                     <p className="font-medium">{review.product?.name}</p>
                                     <div className='flex items-center'>
                                         {Array(5).fill('').map((_, index) => (

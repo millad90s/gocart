@@ -3,7 +3,6 @@ import { useEffect, useState } from "react"
 import { format } from "date-fns"
 import toast from "react-hot-toast"
 import { DeleteIcon } from "lucide-react"
-import { couponDummyData } from "@/assets/assets"
 
 export default function AdminCoupons() {
 
@@ -20,14 +19,50 @@ export default function AdminCoupons() {
     })
 
     const fetchCoupons = async () => {
-        setCoupons(couponDummyData)
+        try {
+            const response = await fetch('/api/coupons')
+            const data = await response.json()
+            setCoupons(Array.isArray(data) ? data : [])
+        } catch (error) {
+            console.error('Error fetching coupons:', error)
+            toast.error('Failed to load coupons')
+        }
     }
 
     const handleAddCoupon = async (e) => {
         e.preventDefault()
-        // Logic to add a coupon
+        
+        try {
+            const response = await fetch('/api/coupons', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newCoupon)
+            })
 
+            if (!response.ok) {
+                const error = await response.json()
+                throw new Error(error.error || 'Failed to create coupon')
+            }
 
+            await fetchCoupons()
+            
+            // Reset form
+            setNewCoupon({
+                code: '',
+                description: '',
+                discount: '',
+                forNewUser: false,
+                forMember: false,
+                isPublic: false,
+                expiresAt: new Date()
+            })
+            
+            toast.success('Coupon added successfully!')
+        } catch (error) {
+            console.error('Error creating coupon:', error)
+            toast.error(error.message)
+            throw error
+        }
     }
 
     const handleChange = (e) => {
@@ -35,9 +70,26 @@ export default function AdminCoupons() {
     }
 
     const deleteCoupon = async (code) => {
-        // Logic to delete a coupon
+        if (!confirm(`Are you sure you want to delete coupon "${code}"?`)) {
+            return
+        }
 
+        try {
+            const response = await fetch(`/api/coupons/${code}`, {
+                method: 'DELETE'
+            })
 
+            if (!response.ok) {
+                throw new Error('Failed to delete coupon')
+            }
+
+            await fetchCoupons()
+            toast.success('Coupon deleted successfully!')
+        } catch (error) {
+            console.error('Error deleting coupon:', error)
+            toast.error('Failed to delete coupon')
+            throw error
+        }
     }
 
     useEffect(() => {

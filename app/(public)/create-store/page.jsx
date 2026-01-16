@@ -27,17 +27,74 @@ export default function CreateStore() {
     }
 
     const fetchSellerStatus = async () => {
-        // Logic to check if the store is already submitted
-
-
-        setLoading(false)
+        try {
+            // TODO: Replace 'user_1' with actual logged-in user ID
+            const userId = 'user_1'
+            
+            const response = await fetch('/api/stores')
+            const stores = await response.json()
+            
+            if (Array.isArray(stores)) {
+                const userStore = stores.find(store => store.userId === userId)
+                
+                if (userStore) {
+                    setAlreadySubmitted(true)
+                    setStatus(userStore.status)
+                    
+                    if (userStore.status === 'pending') {
+                        setMessage('Your store application is under review. You will be notified once it is approved.')
+                    } else if (userStore.status === 'approved') {
+                        setMessage('Your store has been approved! You can now start selling.')
+                    } else if (userStore.status === 'rejected') {
+                        setMessage('Your store application was rejected. Please contact support for more information.')
+                    }
+                }
+            }
+        } catch (error) {
+            console.error('Error checking seller status:', error)
+        } finally {
+            setLoading(false)
+        }
     }
 
     const onSubmitHandler = async (e) => {
         e.preventDefault()
-        // Logic to submit the store details
+        
+        try {
+            // TODO: Replace 'user_1' with actual logged-in user ID
+            const userId = 'user_1'
+            
+            const response = await fetch('/api/stores', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    userId,
+                    name: storeInfo.name,
+                    username: storeInfo.username,
+                    description: storeInfo.description,
+                    email: storeInfo.email,
+                    contact: storeInfo.contact,
+                    address: storeInfo.address,
+                    logo: storeInfo.image ? 'placeholder-url' : undefined
+                })
+            })
 
+            if (!response.ok) {
+                const error = await response.json()
+                throw new Error(error.error || 'Failed to create store')
+            }
 
+            const newStore = await response.json()
+            toast.success('Store submitted for approval!')
+            
+            setAlreadySubmitted(true)
+            setStatus('pending')
+            setMessage('Your store application is under review. You will be notified once it is approved.')
+        } catch (error) {
+            console.error('Error creating store:', error)
+            toast.error(error.message)
+            throw error
+        }
     }
 
     useEffect(() => {
