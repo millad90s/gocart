@@ -74,7 +74,7 @@ export default function Cart() {
                                             </div>
                                             <div>
                                                 <p className="max-sm:text-sm">{item.name}</p>
-                                                <p className="text-xs text-slate-500">{item.category}</p>
+                                                <p className="text-xs text-slate-500">{item.category?.name || 'Uncategorized'}</p>
                                                 <p>{currency}{item.price}</p>
                                             </div>
                                         </td>
