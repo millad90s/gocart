@@ -104,6 +104,14 @@ export default function ProfilePage() {
         }
     }
 
+    const handleAddressChange = (e) => {
+        const { name, value } = e.target
+        setAddressInfo(prev => ({
+            ...prev,
+            [name]: value
+        }))
+    }
+
     const handleAddressSubmit = async (e) => {
         e.preventDefault()
 
@@ -196,16 +204,16 @@ export default function ProfilePage() {
     return (
         <div className="min-h-screen mx-6 my-16">
             <div className="max-w-7xl mx-auto">
-                <h1 className="text-3xl font-medium text-slate-800 mb-8">My Profile</h1>
+                <h1 className="text-3xl font-medium text-slate-800 dark:text-slate-100 mb-8">My Profile</h1>
 
                 {/* Profile Section */}
-                <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6 mb-6">
+                <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-6 mb-6">
                     <div className="flex items-start justify-between mb-6">
-                        <h2 className="text-xl font-medium text-slate-800">Personal Information</h2>
+                        <h2 className="text-xl font-medium text-slate-800 dark:text-slate-100">Personal Information</h2>
                         {!editMode && (
                             <button
                                 onClick={() => setEditMode(true)}
-                                className="flex items-center gap-2 text-blue-600 hover:text-blue-700"
+                                className="flex items-center gap-2 text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
                             >
                                 <EditIcon size={18} />
                                 Edit
@@ -221,30 +229,30 @@ export default function ProfilePage() {
                                     alt="Profile"
                                     width={100}
                                     height={100}
-                                    className="rounded-full border-2 border-slate-200"
+                                    className="rounded-full border-2 border-slate-200 dark:border-slate-600"
                                 />
                             </div>
 
                             <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-sm text-slate-600 mb-1">Name</label>
+                                    <label className="block text-sm text-slate-600 dark:text-slate-300 mb-1">Name</label>
                                     <input
                                         type="text"
                                         value={userInfo.name}
                                         onChange={(e) => setUserInfo({ ...userInfo, name: e.target.value })}
                                         disabled={!editMode}
-                                        className="w-full p-2 border border-slate-200 rounded outline-slate-400 disabled:bg-slate-50"
+                                        className="w-full p-2 border border-slate-200 dark:border-slate-600 rounded outline-slate-400 bg-white disabled:bg-slate-50 dark:bg-slate-900 dark:disabled:bg-slate-700 text-slate-900 dark:text-slate-100"
                                     />
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm text-slate-600 mb-1">Email</label>
+                                    <label className="block text-sm text-slate-600 dark:text-slate-300 mb-1">Email</label>
                                     <input
                                         type="email"
                                         value={userInfo.email}
                                         onChange={(e) => setUserInfo({ ...userInfo, email: e.target.value })}
                                         disabled={!editMode}
-                                        className="w-full p-2 border border-slate-200 rounded outline-slate-400 disabled:bg-slate-50"
+                                        className="w-full p-2 border border-slate-200 dark:border-slate-600 rounded outline-slate-400 bg-white disabled:bg-slate-50 dark:bg-slate-900 dark:disabled:bg-slate-700 text-slate-900 dark:text-slate-100"
                                     />
                                 </div>
                             </div>
@@ -254,7 +262,7 @@ export default function ProfilePage() {
                             <div className="flex gap-3 mt-6">
                                 <button
                                     type="submit"
-                                    className="bg-slate-800 text-white px-6 py-2 rounded hover:bg-slate-900 transition"
+                                    className="bg-slate-800 dark:bg-slate-700 text-white px-6 py-2 rounded hover:bg-slate-900 dark:hover:bg-slate-600 transition"
                                 >
                                     Save Changes
                                 </button>
@@ -268,7 +276,7 @@ export default function ProfilePage() {
                                             image: null
                                         })
                                     }}
-                                    className="bg-slate-200 text-slate-800 px-6 py-2 rounded hover:bg-slate-300 transition"
+                                    className="bg-slate-200 dark:bg-slate-600 text-slate-800 dark:text-slate-100 px-6 py-2 rounded hover:bg-slate-300 dark:hover:bg-slate-500 transition"
                                 >
                                     Cancel
                                 </button>
@@ -278,9 +286,9 @@ export default function ProfilePage() {
                 </div>
 
                 {/* Addresses Section */}
-                <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
+                <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-6">
                     <div className="flex items-start justify-between mb-6">
-                        <h2 className="text-xl font-medium text-slate-800">Saved Addresses</h2>
+                        <h2 className="text-xl font-medium text-slate-800 dark:text-slate-100">Saved Addresses</h2>
                         <button
                             onClick={() => {
                                 setShowAddressForm(true)
@@ -296,7 +304,7 @@ export default function ProfilePage() {
                                     country: ""
                                 })
                             }}
-                            className="flex items-center gap-2 bg-slate-800 text-white px-4 py-2 rounded hover:bg-slate-900 transition"
+                            className="flex items-center gap-2 bg-slate-800 dark:bg-slate-700 text-white px-4 py-2 rounded hover:bg-slate-900 dark:hover:bg-slate-600 transition"
                         >
                             <PlusCircleIcon size={18} />
                             Add Address
@@ -305,80 +313,88 @@ export default function ProfilePage() {
 
                     {/* Address Form */}
                     {showAddressForm && (
-                        <form onSubmit={(e) => toast.promise(handleAddressSubmit(e), { loading: "Saving..." })} className="mb-6 p-4 bg-slate-50 rounded-lg border border-slate-200">
-                            <h3 className="text-lg font-medium text-slate-800 mb-4">
+                        <form onSubmit={(e) => toast.promise(handleAddressSubmit(e), { loading: "Saving..." })} className="mb-6 p-4 bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-600">
+                            <h3 className="text-lg font-medium text-slate-800 dark:text-slate-100 mb-4">
                                 {editingAddress ? 'Edit Address' : 'Add New Address'}
                             </h3>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <input
                                     type="text"
+                                    name="name"
                                     placeholder="Full Name"
                                     value={addressInfo.name}
-                                    onChange={(e) => setAddressInfo({ ...addressInfo, name: e.target.value })}
-                                    className="p-2 border border-slate-200 rounded outline-slate-400"
+                                    onChange={handleAddressChange}
+                                    className="p-2 border border-slate-200 dark:border-slate-600 rounded outline-slate-400 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-400"
                                     required
                                 />
                                 <input
                                     type="email"
+                                    name="email"
                                     placeholder="Email"
                                     value={addressInfo.email}
-                                    onChange={(e) => setAddressInfo({ ...addressInfo, email: e.target.value })}
-                                    className="p-2 border border-slate-200 rounded outline-slate-400"
+                                    onChange={handleAddressChange}
+                                    className="p-2 border border-slate-200 dark:border-slate-600 rounded outline-slate-400 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-400"
                                     required
                                 />
                                 <input
                                     type="tel"
+                                    name="phone"
                                     placeholder="Phone Number"
                                     value={addressInfo.phone}
-                                    onChange={(e) => setAddressInfo({ ...addressInfo, phone: e.target.value })}
-                                    className="p-2 border border-slate-200 rounded outline-slate-400"
+                                    onChange={handleAddressChange}
+                                    className="p-2 border border-slate-200 dark:border-slate-600 rounded outline-slate-400 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-400"
                                     required
                                 />
                                 <input
                                     type="text"
+                                    name="street"
                                     placeholder="Street Address"
                                     value={addressInfo.street}
-                                    onChange={(e) => setAddressInfo({ ...addressInfo, street: e.target.value })}
-                                    className="p-2 border border-slate-200 rounded outline-slate-400"
+                                    onChange={handleAddressChange}
+                                    className="p-2 border border-slate-200 dark:border-slate-600 rounded outline-slate-400 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-400"
                                     required
                                 />
                                 <input
                                     type="text"
+                                    name="city"
                                     placeholder="City"
                                     value={addressInfo.city}
-                                    onChange={(e) => setAddressInfo({ ...addressInfo, city: e.target.value })}
-                                    className="p-2 border border-slate-200 rounded outline-slate-400"
+                                    onChange={handleAddressChange}
+                                    className="p-2 border border-slate-200 dark:border-slate-600 rounded outline-slate-400 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-400"
                                     required
                                 />
                                 <input
                                     type="text"
+                                    name="state"
                                     placeholder="State/Province"
                                     value={addressInfo.state}
-                                    onChange={(e) => setAddressInfo({ ...addressInfo, state: e.target.value })}
-                                    className="p-2 border border-slate-200 rounded outline-slate-400"
+                                    onChange={handleAddressChange}
+                                    className="p-2 border border-slate-200 dark:border-slate-600 rounded outline-slate-400 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-400"
                                     required
                                 />
                                 <input
                                     type="text"
+                                    name="zip"
                                     placeholder="ZIP/Postal Code"
                                     value={addressInfo.zip}
-                                    onChange={(e) => setAddressInfo({ ...addressInfo, zip: e.target.value })}
-                                    className="p-2 border border-slate-200 rounded outline-slate-400"
+                                    onChange={handleAddressChange}
+                                    className="p-2 border border-slate-200 dark:border-slate-600 rounded outline-slate-400 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-400"
                                     required
                                 />
                                 <input
                                     type="text"
+                                    name="country"
                                     placeholder="Country"
                                     value={addressInfo.country}
-                                    onChange={(e) => setAddressInfo({ ...addressInfo, country: e.target.value })}
-                                    className="p-2 border border-slate-200 rounded outline-slate-400"
+                                    onChange={handleAddressChange}
+                                    className="p-2 border border-slate-200 dark:border-slate-600 rounded outline-slate-400 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-400"
                                     required
                                 />
                             </div>
                             <div className="flex gap-3 mt-4">
                                 <button
                                     type="submit"
-                                    className="bg-slate-800 text-white px-6 py-2 rounded hover:bg-slate-900 transition"
+                                    className="bg-slate-800 dark:bg-slate-700 text-white px-6 py-2 rounded hover:bg-slate-900 dark:hover:bg-slate-600 transition"
                                 >
                                     {editingAddress ? 'Update Address' : 'Add Address'}
                                 </button>
@@ -388,7 +404,7 @@ export default function ProfilePage() {
                                         setShowAddressForm(false)
                                         setEditingAddress(null)
                                     }}
-                                    className="bg-slate-200 text-slate-800 px-6 py-2 rounded hover:bg-slate-300 transition"
+                                    className="bg-slate-200 dark:bg-slate-600 text-slate-800 dark:text-slate-100 px-6 py-2 rounded hover:bg-slate-300 dark:hover:bg-slate-500 transition"
                                 >
                                     Cancel
                                 </button>
@@ -398,33 +414,33 @@ export default function ProfilePage() {
 
                     {/* Address List */}
                     {addresses.length === 0 ? (
-                        <p className="text-slate-500 text-center py-8">No saved addresses yet</p>
+                        <p className="text-slate-500 dark:text-slate-400 text-center py-8">No saved addresses yet</p>
                     ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {addresses.map((address) => (
-                                <div key={address.id} className="p-4 border border-slate-200 rounded-lg hover:border-slate-300 transition">
+                                <div key={address.id} className="p-4 border border-slate-200 dark:border-slate-600 rounded-lg hover:border-slate-300 dark:hover:border-slate-500 transition bg-white dark:bg-slate-900">
                                     <div className="flex justify-between items-start mb-2">
-                                        <h3 className="font-medium text-slate-800">{address.name}</h3>
+                                        <h3 className="font-medium text-slate-800 dark:text-slate-100">{address.name}</h3>
                                         <div className="flex gap-2">
                                             <button
                                                 onClick={() => handleEditAddress(address)}
-                                                className="text-blue-600 hover:text-blue-700"
+                                                className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
                                             >
                                                 <EditIcon size={16} />
                                             </button>
                                             <button
                                                 onClick={() => toast.promise(handleDeleteAddress(address.id), { loading: "Deleting..." })}
-                                                className="text-red-600 hover:text-red-700"
+                                                className="text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
                                             >
                                                 <Trash2Icon size={16} />
                                             </button>
                                         </div>
                                     </div>
-                                    <p className="text-sm text-slate-600">{address.street}</p>
-                                    <p className="text-sm text-slate-600">{address.city}, {address.state} {address.zip}</p>
-                                    <p className="text-sm text-slate-600">{address.country}</p>
-                                    <p className="text-sm text-slate-600 mt-2">Phone: {address.phone}</p>
-                                    <p className="text-sm text-slate-600">Email: {address.email}</p>
+                                    <p className="text-sm text-slate-600 dark:text-slate-300">{address.street}</p>
+                                    <p className="text-sm text-slate-600 dark:text-slate-300">{address.city}, {address.state} {address.zip}</p>
+                                    <p className="text-sm text-slate-600 dark:text-slate-300">{address.country}</p>
+                                    <p className="text-sm text-slate-600 dark:text-slate-300 mt-2">Phone: {address.phone}</p>
+                                    <p className="text-sm text-slate-600 dark:text-slate-300">Email: {address.email}</p>
                                 </div>
                             ))}
                         </div>

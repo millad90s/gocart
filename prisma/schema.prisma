@@ -130,6 +130,7 @@ enum OrderStatus {
 enum PaymentMethod {
     COD
     STRIPE
+    PAYPAL
 }
 
 // Required for creating an Order: total, userId, storeId, addressId, isPaid, paymentMethod, isCouponUsed, coupon (JSON), orderItems (nested)
@@ -147,6 +148,14 @@ model Order {
     isCouponUsed  Boolean       @default(false)
     coupon        Json          @default("{}")
     orderItems    OrderItem[]
+    
+    // PayPal specific fields
+    paypalTransactionId String?
+    paypalStatus        String?
+    
+    // Stripe specific fields
+    stripeSessionId     String?
+    stripePaymentIntent String?
 
     // Relations
     user    User    @relation("BuyerRelation", fields: [userId], references: [id])
