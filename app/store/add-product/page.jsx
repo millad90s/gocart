@@ -1,13 +1,14 @@
 'use client'
 import { assets } from "@/assets/assets"
 import Image from "next/image"
+import ImageUpload from "@/components/ImageUpload"
 import { useEffect, useState } from "react"
 import { toast } from "react-hot-toast"
 
 export default function StoreAddProduct() {
 
     const [categories, setCategories] = useState([])
-    const [images, setImages] = useState({ 1: null, 2: null, 3: null, 4: null })
+    const [productImages, setProductImages] = useState([])
     const [productInfo, setProductInfo] = useState({
         name: "",
         description: "",
@@ -37,18 +38,15 @@ export default function StoreAddProduct() {
 
     const onSubmitHandler = async (e) => {
         e.preventDefault()
+
+        if (productImages.length === 0) {
+            toast.error('Please upload at least one product image')
+            return
+        }
+
         setLoading(true)
 
         try {
-            // For now, using image URLs since we don't have file upload configured
-            // You can replace this with actual file upload logic later
-            const imageUrls = Object.values(images)
-                .filter(img => img !== null)
-                .map((img, index) => {
-                    // Placeholder: Replace with actual upload URL after implementing file upload
-                    return `https://images.unsplash.com/photo-placeholder-${Date.now()}-${index}?w=800`
-                })
-
             const response = await fetch('/api/products', {
                 method: 'POST',
                 headers: {
@@ -56,7 +54,7 @@ export default function StoreAddProduct() {
                 },
                 body: JSON.stringify({
                     ...productInfo,
-                    images: imageUrls,
+                    images: productImages,
                     storeId: 'store_1', // TODO: Replace with actual logged-in user's store ID
                 }),
             })
@@ -75,7 +73,7 @@ export default function StoreAddProduct() {
                 price: 0,
                 categoryId: "",
             })
-            setImages({ 1: null, 2: null, 3: null, 4: null })
+            setProductImages([])
             
             toast.success('Product added successfully!')
             return newProduct
@@ -92,15 +90,14 @@ export default function StoreAddProduct() {
     return (
         <form onSubmit={e => toast.promise(onSubmitHandler(e), { loading: "Adding Product..." })} className="text-slate-500 mb-28">
             <h1 className="text-2xl">Add New <span className="text-slate-800 font-medium">Products</span></h1>
-            <p className="mt-7">Product Images</p>
-
-            <div htmlFor="" className="flex gap-3 mt-4">
-                {Object.keys(images).map((key) => (
-                    <label key={key} htmlFor={`images${key}`}>
-                        <Image width={300} height={300} className='h-15 w-auto border border-slate-200 rounded cursor-pointer' src={images[key] ? URL.createObjectURL(images[key]) : assets.upload_area} alt="" />
-                        <input type="file" accept='image/*' id={`images${key}`} onChange={e => setImages({ ...images, [key]: e.target.files[0] })} hidden />
-                    </label>
-                ))}
+            
+            <div className="mt-7">
+                <ImageUpload 
+                    value={productImages} 
+                    onChange={setProductImages}
+                    maxFiles={5}
+                    folder="products"
+                />
             </div>
 
             <label htmlFor="" className="flex flex-col gap-2 my-6 ">
