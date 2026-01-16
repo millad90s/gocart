@@ -93,9 +93,11 @@ const Navbar = () => {
                                         <Link href="/store" className="block px-4 py-2 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700" onClick={() => setShowDropdown(false)}>
                                             My Store
                                         </Link>
-                                        <Link href="/admin" className="block px-4 py-2 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700" onClick={() => setShowDropdown(false)}>
-                                            Admin Panel
-                                        </Link>
+                                        {session.user.email === process.env.NEXT_PUBLIC_ADMIN_EMAIL && (
+                                            <Link href="/admin" className="block px-4 py-2 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700" onClick={() => setShowDropdown(false)}>
+                                                Admin Panel
+                                            </Link>
+                                        )}
                                         <hr className="my-2 dark:border-slate-700" />
                                         <button
                                             onClick={() => {
