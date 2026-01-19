@@ -1,6 +1,6 @@
 <div align="center">
-  <h1><img src="https://gocartshop.in/favicon.ico" width="20" height="20" alt="GoCart Favicon">
-   GoCart</h1>
+  <h1><img src="https://gocartshop.in/favicon.ico" width="20" height="20" alt="Soulyn Jewelry Favicon">
+   Soulyn Jewelry</h1>
   <p>
     An open-source multi-vendor e-commerce platform built with Next.js and Tailwind CSS.
   </p>
@@ -56,7 +56,7 @@
 
 ```bash
 git clone https://github.com/GreatStackDev/goCart.git
-cd goCart
+cd soulynjewelry
 ```
 
 2. **Install dependencies**
@@ -115,9 +115,9 @@ npm run docker:down
 ```
 
 **Default credentials:**
-- User: `gocart`
-- Password: `gocart_password`
-- Database: `gocart`
+- User: `soulynjewelry`
+- Password: `soulynjewelry_password`
+- Database: `soulynjewelry`
 - Port: `5432`
 
 ### Database Management
@@ -149,8 +149,8 @@ The project uses separate environment files for different environments:
 The `.env.development` file is pre-configured for Docker PostgreSQL:
 
 ```env
-DATABASE_URL="postgresql://gocart:gocart_password@localhost:5432/gocart?schema=public"
-DIRECT_URL="postgresql://gocart:gocart_password@localhost:5432/gocart?schema=public"
+DATABASE_URL="postgresql://soulynjewelry:soulynjewelry_password@localhost:5432/soulynjewelry?schema=public"
+DIRECT_URL="postgresql://soulynjewelry:soulynjewelry_password@localhost:5432/soulynjewelry?schema=public"
 ```
 
 ### Production Environment
@@ -158,8 +158,8 @@ DIRECT_URL="postgresql://gocart:gocart_password@localhost:5432/gocart?schema=pub
 Update `.env.production` with your production database credentials:
 
 ```env
-DATABASE_URL="postgresql://user:password@your-host:5432/gocart?schema=public&sslmode=require"
-DIRECT_URL="postgresql://user:password@your-host:5432/gocart?schema=public&sslmode=require"
+DATABASE_URL="postgresql://user:password@your-host:5432/soulynjewelry?schema=public&sslmode=require"
+DIRECT_URL="postgresql://user:password@your-host:5432/soulynjewelry?schema=public&sslmode=require"
 ```
 
 For detailed environment setup instructions, see [ENV_SETUP.md](./ENV_SETUP.md).

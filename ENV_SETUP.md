@@ -31,8 +31,8 @@ npm run db:push
 
 1. Update `.env.production` with your production database credentials:
 ```env
-DATABASE_URL="postgresql://user:password@your-host:5432/gocart?schema=public&sslmode=require"
-DIRECT_URL="postgresql://user:password@your-host:5432/gocart?schema=public&sslmode=require"
+DATABASE_URL="postgresql://user:password@your-host:5432/soulynjewelry?schema=public&sslmode=require"
+DIRECT_URL="postgresql://user:password@your-host:5432/soulynjewelry?schema=public&sslmode=require"
 ```
 
 2. Build for production:

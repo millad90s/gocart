@@ -8,7 +8,7 @@
 4. Click **Create Credentials** → **OAuth 2.0 Client ID**
 5. Configure consent screen if prompted:
    - Choose **External** for testing
-   - Fill in app name: **GoCart**
+   - Fill in app name: **Soulyn Jewelry**
    - Add your email
    - Add authorized domain (for production)
 6. For Application type, select **Web application**
@@ -52,7 +52,7 @@ npm run dev
 2. Click the "Login" button in the navbar
 3. You'll be redirected to Google's sign-in page
 4. Sign in with your Google account
-5. Grant permissions to GoCart
+5. Grant permissions to Soulyn Jewelry
 6. You'll be redirected back to your app, now logged in!
 
 ## User Profile Features

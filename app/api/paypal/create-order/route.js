@@ -68,7 +68,7 @@ export async function POST(request) {
                     },
                 ],
                 application_context: {
-                    brand_name: 'GoCart',
+                    brand_name: 'Soulyn Jewelry',
                     landing_page: 'NO_PREFERENCE',
                     user_action: 'PAY_NOW',
                     return_url: `${process.env.NEXTAUTH_URL}/orders`,
